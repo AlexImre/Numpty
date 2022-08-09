@@ -1,0 +1,28 @@
+.CalcRow1,
+    .CalcRow2,
+        .CalcRow3,
+            .CalcRow4 {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Calcbox {
+    border: 1px solid black;
+    background-color: rgb(87, 84, 84);
+    margin: 1px;
+    padding: 15px;
+    font-size: medium;
+    max-height: 40px;
+    cursor: pointer;
+}
+
+#Calcbox {
+    border: 1px solid black;
+    background-color: rgb(87, 84, 84);
+    margin: 1px;
+    padding: 15px;
+    font-size: medium;
+    max-height: 40px;
+    cursor: pointer;
+}

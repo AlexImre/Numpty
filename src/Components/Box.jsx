@@ -1,24 +1,21 @@
-/* box
- props: 
-
- 
-
- */
-
 import React from 'react';
 import './Box.css';
 
 class Box extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    
 
 
-    getColor(correctCode, guess, place) {
-        /*
-        correctCode = [5,3,2]; 
-        guess = 5;
-        place = 0; ...possible to be 0,1,2
-        */
-
-        let colour = 'grey';
+    getColor(correctCode, guess, place, rowComplete, turn) {
+        if (rowComplete[turn] === false) {
+            return;
+        }
+        if (!this.props.isRowComplete()) {
+            return;
+        }
+        let colour = '';
         let isCorrectCode = correctCode.includes(guess);
         let isCorrectPlace = isCorrectCode && correctCode[place] === guess;
 
@@ -26,6 +23,8 @@ class Box extends React.Component {
             colour = 'green';
         } else if (isCorrectCode) {
             colour = 'amber';
+        } else {
+            colour = 'grey'
         }
         return colour;
     }
@@ -34,11 +33,13 @@ class Box extends React.Component {
         const {
             correctCode,
             guess,
-            place
+            place,
+            turn,
+            rowComplete
         } = this.props;
 
         return (
-            <div className={`box ${this.getColor(correctCode, guess, place)}`}>{guess}</div>
+            <div className={`box ${this.getColor(correctCode, guess, place, rowComplete, turn)}`}>{guess}</div>
         )
     }
 }
