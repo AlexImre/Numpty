@@ -6,28 +6,35 @@ class Box extends React.Component {
         super(props);
     }
     
+    getColor(correctCode, guess, place, rowComplete, turn) {        
+            if (!this.props.isRowComplete()) {
+                return;
+            }
+            let colour = '';
+            let isCorrectCode = correctCode.includes(guess);
+            let isCorrectPlace = isCorrectCode && correctCode[place] === guess;
+    
+            if (isCorrectPlace) {
+                colour = 'green';
+            } else if (isCorrectCode) {
+                colour = 'amber';
+            } else {
+                colour = 'grey'
+            }
+            return colour;
+        }
 
 
-    getColor(correctCode, guess, place, rowComplete, turn) {
-        if (rowComplete[turn] === false) {
-            return;
+    renderColors(correctCode, guess, place, rowComplete, turn) {
+        if (rowComplete[1]){
+            return this.getColor(correctCode, guess, place, rowComplete, turn)
         }
-        if (!this.props.isRowComplete()) {
-            return;
+        if (rowComplete[1] && rowComplete[2]){
+            return this.getColor(correctCode, guess, place, rowComplete, turn)
         }
-        let colour = '';
-        let isCorrectCode = correctCode.includes(guess);
-        let isCorrectPlace = isCorrectCode && correctCode[place] === guess;
-
-        if (isCorrectPlace) {
-            colour = 'green';
-        } else if (isCorrectCode) {
-            colour = 'amber';
-        } else {
-            colour = 'grey'
-        }
-        return colour;
     }
+
+
 
     render() {
         const {
@@ -39,7 +46,7 @@ class Box extends React.Component {
         } = this.props;
 
         return (
-            <div className={`box ${this.getColor(correctCode, guess, place, rowComplete, turn)}`}>{guess}</div>
+            <div className={`box ${this.renderColors(correctCode, guess, place, rowComplete, turn)}`}>{guess}</div>
         )
     }
 }

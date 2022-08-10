@@ -3,6 +3,7 @@ import './App.css';
 import Row from "./Components/Row"
 import React from 'react';
 import Calculator from './Components/Calculator';
+import HappyEnding from './Components/HappyEnding';
 
 /*
 state:
@@ -27,9 +28,9 @@ class App extends React.Component {
       turn: 1,
       rowComplete: {
         1: false,
-        2: true,
-        3: true,
-        4: true
+        2: false,
+        3: false,
+        4: false
       },
       correctCode: this.generateRandomNumber(),
       numbersPicked: {
@@ -38,10 +39,13 @@ class App extends React.Component {
         3: [],
         4: []
       },
-      place: [0, 1, 2]
+      place: [0, 1, 2],
+      gameLost: false,
+      gameWon: false
     };
     this.updateGuess = this.updateGuess.bind(this);
     this.updateTurn = this.updateTurn.bind(this);
+    this.resetGame = this.resetGame.bind(this);
   }
 
   updateGuess(guess) {
@@ -58,10 +62,15 @@ class App extends React.Component {
     this.setState(prevState => ({
       rowComplete: {
         ...prevState.rowComplete,
-        [this.state.turn + 1]: true
+        [this.state.turn]: true
       },
       turn: this.state.turn + 1
     }))
+  }
+
+  // JUST COPY INITIAL STATE CONDITIONS ONCE FINALISED
+  resetGame() {
+    this.setState({ });
   }
 
 
@@ -104,8 +113,12 @@ class App extends React.Component {
             updateGuess={this.updateGuess}
             rowComplete={this.state.rowComplete}
             updateTurn={this.updateTurn}
+            place={this.state.place}
+            resetGame ={this.resetGame}
             />
         </header>
+        {/* HappyEnding only shows on gameWon */}
+        {this.state.gameWon? <HappyEnding winCondition=""/> : ""}
       </div>
     );
   };
