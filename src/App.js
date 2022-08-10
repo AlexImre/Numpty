@@ -80,12 +80,14 @@ class App extends React.Component {
         <header className="App-header">
           <h1>Numpty</h1>
           <Row 
+            rowID={1}
             turn={this.state.turn} 
             guesses={this.state.numbersPicked[1]} 
             correctCode={this.state.correctCode} 
             updateColour={this.updateColour} 
             rowComplete={this.state.rowComplete} />
           <Row 
+            rowID={2}
             turn={this.state.turn} 
             guesses={this.state.numbersPicked[2]} 
             correctCode={this.state.correctCode} 

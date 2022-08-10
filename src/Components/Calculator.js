@@ -63,6 +63,24 @@ class Calculator extends React.Component {
             correctCode,
         } = this.props;
 
+        /*
+        SOLUTION 1:
+calculatorColorMap = {
+    1: 'green',
+    2: 'grey',
+    3 ...
+    }
+
+    SOLUTION 2:
+    - every time you hit enter update these two things in state in a method:
+correctNumbersInPlace = [5,2],
+correctNumbersInAnyPlace = [2]
+- what info do you need to update the above two attributes? i think just guesses + correct code
+- then in your button ...change colours based on passing in correctNumbersInPlace, correctNumbersInAnyPlace, buttonID (e.g. 5). If button ID is in any of the correctNumbersInPlace & correctNumbersInAnyPlace, update the colour
+}
+
+        */
+
         let numberPressed = this.state.numberPressed;
 
         return (

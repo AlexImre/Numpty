@@ -6,35 +6,22 @@ class Box extends React.Component {
         super(props);
     }
     
-    getColor(correctCode, guess, place, rowComplete, turn) {        
-            if (!this.props.isRowComplete()) {
-                return;
+    getColor(correctCode, guess, place, isRowComplete) {        
+            let colour = '',
+            isCorrectCode = correctCode.includes(guess),
+            isCorrectPlace = isCorrectCode && correctCode[place] === guess;
+
+            if(isRowComplete){
+                if (isCorrectPlace) {
+                    colour = 'green';
+                } else if (isCorrectCode) {
+                    colour = 'amber';
+                } else {
+                    colour = 'grey'
+                }
+                return colour;
             }
-            let colour = '';
-            let isCorrectCode = correctCode.includes(guess);
-            let isCorrectPlace = isCorrectCode && correctCode[place] === guess;
-    
-            if (isCorrectPlace) {
-                colour = 'green';
-            } else if (isCorrectCode) {
-                colour = 'amber';
-            } else {
-                colour = 'grey'
-            }
-            return colour;
         }
-
-
-    renderColors(correctCode, guess, place, rowComplete, turn) {
-        if (rowComplete[1]){
-            return this.getColor(correctCode, guess, place, rowComplete, turn)
-        }
-        if (rowComplete[1] && rowComplete[2]){
-            return this.getColor(correctCode, guess, place, rowComplete, turn)
-        }
-    }
-
-
 
     render() {
         const {
@@ -42,11 +29,11 @@ class Box extends React.Component {
             guess,
             place,
             turn,
-            rowComplete
+            isRowComplete
         } = this.props;
 
         return (
-            <div className={`box ${this.renderColors(correctCode, guess, place, rowComplete, turn)}`}>{guess}</div>
+            <div className={`box ${this.getColor(correctCode, guess, place, isRowComplete, turn)}`}>{guess}</div>
         )
     }
 }

@@ -20,6 +20,7 @@ class Row extends React.Component {
 
     render() {
         const {
+            rowID,
             correctCode,
             turn,
             guesses,
@@ -32,18 +33,16 @@ class Row extends React.Component {
                         place={0} 
                         guess={guesses[0]} 
                         updateColour={this.props.updateColour} 
-                        rowComplete={this.props.rowComplete}
                         turn={turn}
-                        isRowComplete={this.isRowComplete}
+                        isRowComplete={this.props.rowComplete[rowID]}
                         />
                     <Box 
                         correctCode={correctCode} 
                         place={1} 
                         guess={guesses[1]} 
                         updateColour={this.props.updateColour} 
-                        rowComplete={this.props.rowComplete}
                         turn={turn}
-                        isRowComplete={this.isRowComplete}
+                        isRowComplete={this.props.rowComplete[rowID]}
                         />
                     <Box 
                         correctCode={correctCode} 
@@ -52,7 +51,7 @@ class Row extends React.Component {
                         updateColour={this.props.updateColour} 
                         rowComplete={this.props.rowComplete}
                         turn={turn}
-                        isRowComplete={this.isRowComplete}
+                        isRowComplete={this.props.rowComplete[rowID]}
                         />
                 </div>
         )
