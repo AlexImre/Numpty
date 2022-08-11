@@ -2,8 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid grey;
-    background-color: #282c34;
+    border: 2px solid #343A40;
+    background-color: #121213;
     border-radius: 50%;
     height: 50px;
     width: 50px;
@@ -12,16 +12,16 @@
 }
 
 .green {
-    background-color: green;
+    background-color: #538d4e;
     color: aliceblue;
 }
 
 .amber {
-    background-color: rgb(209, 147, 14);
+    background-color: #b59f3b;
     color: aliceblue;
 }
 
 .grey {
-    background-color: rgb(87, 85, 85);
+    background-color: #3A3A3C;
     color: aliceblue;
 }

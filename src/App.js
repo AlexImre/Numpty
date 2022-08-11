@@ -84,27 +84,25 @@ class App extends React.Component {
             turn={this.state.turn} 
             guesses={this.state.numbersPicked[1]} 
             correctCode={this.state.correctCode} 
-            updateColour={this.updateColour} 
             rowComplete={this.state.rowComplete} />
           <Row 
             rowID={2}
             turn={this.state.turn} 
             guesses={this.state.numbersPicked[2]} 
             correctCode={this.state.correctCode} 
-            updateColour={this.updateColour}
             rowComplete={this.state.rowComplete} />
-          {/* <Row 
+          <Row 
+            rowID={3}
             turn={this.state.turn} 
             guesses={this.state.numbersPicked[3]} 
             correctCode={this.state.correctCode} 
-            updateColour={this.updateColour}
             rowComplete={this.state.rowComplete} />
-          <Row 
+          <Row
+            rowID={4}  
             turn={this.state.turn} 
             guesses={this.state.numbersPicked[4]} 
             correctCode={this.state.correctCode} 
-            updateColour={this.updateColour}
-            rowComplete={this.state.rowComplete} /> */}
+            rowComplete={this.state.rowComplete} />
             <hr></hr>
             <hr></hr>
             <hr></hr>
@@ -117,6 +115,19 @@ class App extends React.Component {
             updateTurn={this.updateTurn}
             place={this.state.place}
             resetGame ={this.resetGame}
+            buttonColours = { {
+              0: "",
+              1: "",
+              2: "",
+              3: "",
+              4: "",
+              5: "",
+              6: "",
+              7: "",
+              8: "",
+              9: ""
+            }
+        }
             />
         </header>
         {/* HappyEnding only shows on gameWon */}

@@ -8,8 +8,25 @@ class Calculator extends React.Component {
         this.getColor = this.getColor.bind(this);
         this.submitGuess = this.submitGuess.bind(this);
         this.state = {
-            numberPressed: 0
+            numberPressed: 0,
+            correctNumAndPlace: [],
+            correctNum: [],
+            wrongNum: [],
+            buttonColours: {
+                0: "",
+                1: "",
+                2: "",
+                3: "",
+                4: "",
+                5: "",
+                6: "",
+                7: "",
+                8: "",
+                9: ""
+            }
         }
+        this.updateButtonColours = this.updateButtonColours.bind(this);
+        this.clearGuesses = this.clearGuesses.bind(this);
     }
 
     pickNumber(e) {
@@ -22,31 +39,66 @@ class Calculator extends React.Component {
         }
         this.props.updateGuess(guesses[turn]);
 
+        let correctCode = this.props.correctCode;
+        let correctNumAndPlace = this.state.correctNumAndPlace;
+        let correctPlace = this.state.correctNum;
+        let wrongNum = this.state.wrongNum;
+        let place = guesses[turn].length - 1;
+        console.log(`place: ${place}`)
+        let isCorrectNum = correctCode.includes(numberPressed);
+        let isCorrectPlace = correctCode[place] === numberPressed;
+        if (isCorrectNum && isCorrectPlace){
+            correctNumAndPlace.push(numberPressed);
+        } else if (isCorrectNum) {
+            correctPlace.push(numberPressed);
+        } else {
+            wrongNum.push(numberPressed)
+        }
+        // DO I NEED THIS?
         this.setState({
             numberPressed: numberPressed
         })
     }
 
-    getColor(numberPressed, place, correctCode) {        
-        let colour = '';
-        // numberPressed = this.state.numberPressed;
-        let isCorrectCode = correctCode.includes(numberPressed);
-        let isCorrectPlace = correctCode[place] === numberPressed;
-
-        if (isCorrectPlace && isCorrectCode) {
-            colour = 'green'
-        } else if (isCorrectCode) {
-            colour ='amber'
-        } else {
-            colour ='grey'
+    getColor(buttonValue) {        
+        let numberPressed = this.state.numberPressed;
+        let correctNumAndPlace = this.state.correctNumAndPlace;
+        let buttonID = buttonValue === numberPressed;
+        console.log(`number pressed is: ${numberPressed} and buttonID: ${buttonID}`);
+        let correctPlace = this.state.correctNum;
+        let wrongNum = this.state.wrongNum;
+        let buttonColours = this.props.buttonColours;
+        if (correctNumAndPlace.includes(buttonValue)) {
+            buttonColours[buttonValue] = "green";
+        } else if (correctPlace.includes(buttonValue)) {
+            buttonColours[buttonValue] = "amber";
+        } else if (wrongNum.includes(buttonValue)) {
+            buttonColours[buttonValue] = "grey";
         }
-
-        console.log(`numberPressed is: ${numberPressed}, place is: ${place} and correctCode is: ${correctCode}`);
-        console.log(`isCorrectCode: ${isCorrectCode} isCorrectPlace: ${isCorrectPlace}`);
-        console.log(`colour of box should be: ${colour}`);
-
-        return colour;
+        return buttonColours[buttonValue];
     }
+
+    updateButtonColours(buttonValues) {
+        this.setState(prevState => ({
+            buttonColours: {
+              ...prevState.buttonColours,
+              [buttonValues[0]]: this.getColor(buttonValues[0]),
+              [buttonValues[1]]: this.getColor(buttonValues[1]),
+              [buttonValues[2]]: this.getColor(buttonValues[2])
+            }
+          }))
+    }
+
+    updateTurn() {
+        this.setState(prevState => ({
+          rowComplete: {
+            ...prevState.rowComplete,
+            [this.state.turn]: true
+          },
+          turn: this.state.turn + 1
+        }))
+      }
+    
 
     submitGuess() {
         this.props.updateTurn();
@@ -56,39 +108,25 @@ class Calculator extends React.Component {
         this.props.resetGame();
     }
 
-    render() {
-        const {
-            turn,
-            guesses,
-            correctCode,
-        } = this.props;
-
-        /*
-        SOLUTION 1:
-calculatorColorMap = {
-    1: 'green',
-    2: 'grey',
-    3 ...
+    clearGuesses() {
+        this.props.guesses[this.props.turn].pop();
+        this.props.updateGuess(this.props.guesses[this.props.turn]);
     }
 
-    SOLUTION 2:
-    - every time you hit enter update these two things in state in a method:
-correctNumbersInPlace = [5,2],
-correctNumbersInAnyPlace = [2]
-- what info do you need to update the above two attributes? i think just guesses + correct code
-- then in your button ...change colours based on passing in correctNumbersInPlace, correctNumbersInAnyPlace, buttonID (e.g. 5). If button ID is in any of the correctNumbersInPlace & correctNumbersInAnyPlace, update the colour
-}
-
-        */
-
-        let numberPressed = this.state.numberPressed;
+    render() {
+        const {
+            correctCode,
+            rowComplete,
+            turn
+        } = this.props;
 
         return (
+            <>
             <div className="CalculatorContainer">
                 <div className="CalcRow1">
                     <button 
                         // DO I NEED TO HAVE INDIVIDUAL CALC BOX COMPONENTS?
-                        className={`Calcbox ${this.getColor(numberPressed, 0, correctCode)}`}
+                        className={`Calcbox ${this.state.buttonColours[7]}`}
                         // WHY DOES PICKNUMBER WORK WITHOUT (e)?
                         onClick={this.pickNumber}
                         // onClick={(e) => {
@@ -99,35 +137,87 @@ correctNumbersInAnyPlace = [2]
                         >7
                     </button>
                     <button 
-                        className={`Calcbox ${this.getColor(numberPressed, 1, correctCode)}`} 
-                        onClick={this.pickNumber} 
+                        className={`Calcbox ${this.state.buttonColours[8]}`}
+                        onClick={ (e) => {
+                            this.pickNumber(e);
+                            }
+                        }
                         value={8}
                         >8
                     </button>
                     <button 
-                        className={`Calcbox ${this.getColor(numberPressed, 2, correctCode)}`} 
+                        className={`Calcbox ${this.state.buttonColours[9]}`}
                         onClick={this.pickNumber} 
                         value={9}>
                         9
                     </button>
                 </div>
                 <div className="CalcRow2">
-                    <button className="Calcbox" onClick={this.pickNumber} value={4}>4</button>
-                    <button className="Calcbox" onClick={this.pickNumber} value={5}>5</button>
-                    <button className="Calcbox" onClick={this.pickNumber} value={6}>6</button>
+                    <button 
+                        className={`Calcbox ${this.state.buttonColours[4]}`}
+                        onClick={this.pickNumber} 
+                        value={4}>
+                        4
+                    </button>
+                    <button 
+                        className={`Calcbox ${this.state.buttonColours[5]}`}
+                        onClick={this.pickNumber} 
+                        value={5}>
+                        5
+                    </button>
+                    <button 
+                        className={`Calcbox ${this.state.buttonColours[6]}`}
+                        onClick={this.pickNumber} 
+                        value={6}
+                        >6
+                    </button>
                 </div>
                 <div className="CalcRow3">
-                    <button className="Calcbox" onClick={this.pickNumber} value={1}>1</button>
-                    <button className="Calcbox" onClick={this.pickNumber} value={2}>2</button>
-                    <button className="Calcbox" onClick={this.pickNumber} value={3}>3</button>
+                    <button 
+                        className={`Calcbox ${this.state.buttonColours[1]}`}
+                        onClick={this.pickNumber} 
+                        value={1}
+                        >1
+                    </button>
+                    <button 
+                        className={`Calcbox ${this.state.buttonColours[2]}`}
+                        onClick={this.pickNumber} 
+                        value={2}
+                        >2
+                    </button>
+                    <button 
+                        className={`Calcbox ${this.state.buttonColours[3]}`}
+                        onClick={this.pickNumber} 
+                        value={3}
+                        >3
+                    </button>
                 </div>
                 <div className="CalcRow4">
-                    <div className="Calcbox" onClick={this.resetGame}>Reset</div>
-                    <button className="Calcbox" onClick={this.pickNumber} value={0}>0</button>
-                    <div className="Calcbox" onClick={this.submitGuess}>Enter</div>
+                    <div 
+                        className="Calcbox Clear" 
+                        onClick={this.clearGuesses}
+                        >Clear
+                    </div>
+                    <button 
+                        className={`Calcbox ${this.state.buttonColours[0]}`}
+                        onClick={this.pickNumber} 
+                        value={0}>
+                        0
+                    </button>
+                    <div 
+                        className="Calcbox Enter" 
+                        onClick={ () => {
+                            this.submitGuess();
+                            this.updateButtonColours(this.props.guesses[turn]);
+                            }}
+                        >Enter
+                    </div>
                 </div>
 
             </div>
+            <div className="Calcbox Reset" onClick={this.resetGame}>Reset</div>
+
+            </>
         )
     }
 }
