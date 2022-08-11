@@ -3,6 +3,7 @@ import Row from "./Components/Row"
 import React from 'react';
 import Calculator from './Components/Calculator';
 import HappyEnding from './Components/HappyEnding';
+import SadEnding from './Components/SadEnding';
 
 class App extends React.Component {
   generateRandomNumber() {
@@ -23,14 +24,16 @@ class App extends React.Component {
         1: false,
         2: false,
         3: false,
-        4: false
+        4: false,
+        5: false,
       },
       correctCode: this.generateRandomNumber(),
       numbersPicked: {
         1: [],
         2: [],
         3: [],
-        4: []
+        4: [],
+        5: []
       },
       place: [0, 1, 2],
       gameLost: false,
@@ -70,14 +73,16 @@ class App extends React.Component {
         1: false,
         2: false,
         3: false,
-        4: false
+        4: false,
+        5: false
       },
       correctCode: this.generateRandomNumber(),
       numbersPicked: {
         1: [],
         2: [],
         3: [],
-        4: []
+        4: [],
+        5: []
       },
       place: [0, 1, 2],
       gameLost: false,
@@ -125,6 +130,12 @@ class App extends React.Component {
             guesses={this.state.numbersPicked[4]} 
             correctCode={this.state.correctCode} 
             rowComplete={this.state.rowComplete} />
+          <Row
+            rowID={5}  
+            turn={this.state.turn} 
+            guesses={this.state.numbersPicked[5]} 
+            correctCode={this.state.correctCode} 
+            rowComplete={this.state.rowComplete} />
           <div className="DivSpacer1"></div>
           <Calculator 
             turn={this.state.turn} 
@@ -151,6 +162,7 @@ class App extends React.Component {
         }
             />
           {this.state.gameWon? <HappyEnding turn={this.state.turn - 1} /> : ""}
+          {!this.state.gameWon && this.state.turn === 6 ? <SadEnding correctCode={this.state.correctCode} /> : ""}
         </header>
 
       </div>

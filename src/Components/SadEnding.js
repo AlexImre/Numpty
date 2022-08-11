@@ -1,16 +1,16 @@
 import React from 'react';
 
-class HappyEnding extends React.Component {
+class SadEnding extends React.Component {
 
     render() {
         return (
             <div className="happyEndingContainer">
                 <div className="finishMessage">
-                    <p>Congrats! You beat Numpty in {this.props.turn} turn{this.props.turn === 1? "" : "s"}!</p>
+                    <p>You Numpty! The correct code was {this.props.correctCode}!</p>
                 </div>
             </div>
         )
     }
 }
 
-export default HappyEnding;
+export default SadEnding;

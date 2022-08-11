@@ -46,7 +46,6 @@ class Calculator extends React.Component {
         let correctPlace = this.state.correctNum;
         let wrongNum = this.state.wrongNum;
         let place = guesses[turn].length - 1;
-        console.log(`place: ${place}`)
         let isCorrectNum = correctCode.includes(numberPressed);
         let isCorrectPlace = correctCode[place] === numberPressed;
         if (isCorrectNum && isCorrectPlace){
