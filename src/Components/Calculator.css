@@ -32,15 +32,13 @@
 }
 
 .Clear {
-    background-color:#FFC107;
+    background-color:#F8F9FA;
     color: #343A40;
 }
 
 .Enter {
     background-color: #007BFF;
 }
-
-
 
 .green {
     background-color: #538d4e;
@@ -55,5 +53,10 @@
 .grey {
     background-color: #3A3A3C;
     color: #F8F9FA;
+}
+
+.fa-solid{
+    font-size: large;
+    color: #343A40;
 }
 

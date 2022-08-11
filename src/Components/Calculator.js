@@ -27,6 +27,8 @@ class Calculator extends React.Component {
         }
         this.updateButtonColours = this.updateButtonColours.bind(this);
         this.clearGuesses = this.clearGuesses.bind(this);
+        this.resetGame = this.resetGame.bind(this);
+        this.gameWon = this.gameWon.bind(this);
     }
 
     pickNumber(e) {
@@ -54,17 +56,14 @@ class Calculator extends React.Component {
         } else {
             wrongNum.push(numberPressed)
         }
-        // DO I NEED THIS?
+
         this.setState({
             numberPressed: numberPressed
         })
     }
 
     getColor(buttonValue) {        
-        let numberPressed = this.state.numberPressed;
         let correctNumAndPlace = this.state.correctNumAndPlace;
-        let buttonID = buttonValue === numberPressed;
-        console.log(`number pressed is: ${numberPressed} and buttonID: ${buttonID}`);
         let correctPlace = this.state.correctNum;
         let wrongNum = this.state.wrongNum;
         let buttonColours = this.props.buttonColours;
@@ -79,6 +78,7 @@ class Calculator extends React.Component {
     }
 
     updateButtonColours(buttonValues) {
+        if (this.props.guesses[this.props.turn].length === 3){
         this.setState(prevState => ({
             buttonColours: {
               ...prevState.buttonColours,
@@ -87,6 +87,7 @@ class Calculator extends React.Component {
               [buttonValues[2]]: this.getColor(buttonValues[2])
             }
           }))
+        }
     }
 
     updateTurn() {
@@ -99,13 +100,36 @@ class Calculator extends React.Component {
         }))
       }
     
-
     submitGuess() {
-        this.props.updateTurn();
+        if (this.props.guesses[this.props.turn].length === 3){
+            this.props.updateTurn();
+        }
+    }
+
+    gameWon() {
+        this.props.gameWon();
     }
 
     resetGame() {
         this.props.resetGame();
+        this.setState({
+            numberPressed: 0,
+            correctNumAndPlace: [],
+            correctNum: [],
+            wrongNum: [],
+            buttonColours: {
+                0: "",
+                1: "",
+                2: "",
+                3: "",
+                4: "",
+                5: "",
+                6: "",
+                7: "",
+                8: "",
+                9: ""
+            }
+        })
     }
 
     clearGuesses() {
@@ -115,8 +139,6 @@ class Calculator extends React.Component {
 
     render() {
         const {
-            correctCode,
-            rowComplete,
             turn
         } = this.props;
 
@@ -196,7 +218,7 @@ class Calculator extends React.Component {
                     <div 
                         className="Calcbox Clear" 
                         onClick={this.clearGuesses}
-                        >Clear
+                        ><i className="fa-solid fa-delete-left"></i>
                     </div>
                     <button 
                         className={`Calcbox ${this.state.buttonColours[0]}`}
@@ -209,6 +231,7 @@ class Calculator extends React.Component {
                         onClick={ () => {
                             this.submitGuess();
                             this.updateButtonColours(this.props.guesses[turn]);
+                            this.props.gameWon();
                             }}
                         >Enter
                     </div>

@@ -1,15 +1,8 @@
-import logo from './logo.svg';
 import './App.css';
 import Row from "./Components/Row"
 import React from 'react';
 import Calculator from './Components/Calculator';
 import HappyEnding from './Components/HappyEnding';
-
-/*
-state:
-number of guesses
-what the correct code is for this session
-*/
 
 class App extends React.Component {
   generateRandomNumber() {
@@ -46,6 +39,7 @@ class App extends React.Component {
     this.updateGuess = this.updateGuess.bind(this);
     this.updateTurn = this.updateTurn.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.gameWon = this.gameWon.bind(this);
   }
 
   updateGuess(guess) {
@@ -70,9 +64,37 @@ class App extends React.Component {
 
   // JUST COPY INITIAL STATE CONDITIONS ONCE FINALISED
   resetGame() {
-    this.setState({ });
+    this.setState({ 
+      turn: 1,
+      rowComplete: {
+        1: false,
+        2: false,
+        3: false,
+        4: false
+      },
+      correctCode: this.generateRandomNumber(),
+      numbersPicked: {
+        1: [],
+        2: [],
+        3: [],
+        4: []
+      },
+      place: [0, 1, 2],
+      gameLost: false,
+      gameWon: false
+    });
   }
 
+  gameWon() {
+    let guesses = JSON.stringify(this.state.numbersPicked[this.state.turn]);
+    let correctCode = JSON.stringify(this.state.correctCode);
+      if (String(guesses) === String(correctCode)) {
+        console.log(`numberspicked[1]: ${this.state.numbersPicked[1]}`);
+        this.setState({
+          gameWon: true
+        })
+    }
+  }
 
   render() {
     return (
@@ -103,9 +125,7 @@ class App extends React.Component {
             guesses={this.state.numbersPicked[4]} 
             correctCode={this.state.correctCode} 
             rowComplete={this.state.rowComplete} />
-            <hr></hr>
-            <hr></hr>
-            <hr></hr>
+          <div className="DivSpacer1"></div>
           <Calculator 
             turn={this.state.turn} 
             guesses={this.state.numbersPicked} 
@@ -115,6 +135,7 @@ class App extends React.Component {
             updateTurn={this.updateTurn}
             place={this.state.place}
             resetGame ={this.resetGame}
+            gameWon={this.gameWon}
             buttonColours = { {
               0: "",
               1: "",
@@ -129,9 +150,9 @@ class App extends React.Component {
             }
         }
             />
+          {this.state.gameWon? <HappyEnding turn={this.state.turn - 1} /> : ""}
         </header>
-        {/* HappyEnding only shows on gameWon */}
-        {this.state.gameWon? <HappyEnding winCondition=""/> : ""}
+
       </div>
     );
   };

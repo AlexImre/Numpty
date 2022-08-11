@@ -7,7 +7,7 @@ class HappyEnding extends React.Component {
         return (
             <div className="happyEndingContainer">
                 <div className="finishMessage">
-                    <p>derp</p>
+                    <p>Congrats! You beat Numpty in {this.props.turn} turn{this.props.turn === 1? "" : "s"}!</p>
                 </div>
             </div>
         )
